@@ -1,3 +1,8 @@
+var five = require("johnny-five");
+var Raspi = require("raspi-io");
+var board = new five.Board({
+  io: new Raspi()
+});
 var express = require("express");
 var app = new express();
 var http = require("http").Server(app);
@@ -23,4 +28,17 @@ io.on('connection',function(socket){
  
 http.listen(PORT,function(){
 console.log(HOST+':'+PORT)
+
+
+board.on("ready", function() {
+    // var led = new five.Led("P1-13");
+    // led.blink();
+    var lcd = new five.LCD({
+        controller: "JHD1313M1"
+      });
+      lcd.useChar("heart");
+      lcd.cursor(0, 0).print("hello :heart:");
+      lcd.blink();
+      lcd.cursor(1, 0).print("Blinking? ")
+  });
 });
