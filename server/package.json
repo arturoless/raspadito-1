@@ -2,15 +2,14 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
     "test": "node app.js"
   },
-  "author": "raspadito",
+  "author": "A",
   "license": "MIT",
   "dependencies": {
     "express": "^4.16.4",
-    "johnny-five": "^1.0.0",
-    "socket-io": "^1.0.0"
+    "socket.io": "^2.2.0"
   }
 }

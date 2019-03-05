@@ -1,8 +1,3 @@
-var five = require("johnny-five");
-var Raspi = require("raspi-io");
-var board = new five.Board({
-  io: new Raspi()
-});
 var express = require("express");
 var app = new express();
 var http = require("http").Server(app);
@@ -17,28 +12,25 @@ if(wifi==null){
 else{
     var ipv4 = wifi[0]
 }
-var PORT = process.env.PORT || 3001;
-var HOST = ipv4['address']
-io.on('connection',function(socket){
-    socket.on('data',function(text){
-        socket.emit('data',text);  
+var port = process.env.port || 3001;
+var HOST = ipv4['address'];
+var net = require('net');
+
+var client = new net.Socket();
+client.connect(3000, '192.168.137.202', function() {
+    console.log('Connected');
+    io.on('connection',function(socket){
+        socket.on('data',function(msg){
+            socket.emit('data',msg)
+            client.write(msg);
+        });
+     
     });
- 
+    
 });
+
+
  
-http.listen(PORT,function(){
-console.log(HOST+':'+PORT)
-
-
-board.on("ready", function() {
-    // var led = new five.Led("P1-13");
-    // led.blink();
-    var lcd = new five.LCD({
-        controller: "JHD1313M1"
-      });
-      lcd.useChar("heart");
-      lcd.cursor(0, 0).print("hello :heart:");
-      lcd.blink();
-      lcd.cursor(1, 0).print("Blinking? ")
-  });
+http.listen(port,function(){
+console.log(HOST+':'+port)
 });
